@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <tbody id="faculty-list">
+        {% for faculty in ranked_faculty %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ faculty.name }}</td>
+            <td>{{ faculty.qualifications }}</td>
+            <td>{{ faculty.experience }}</td>
+            <td>{{ faculty.score }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>    
+    <header>
+        <h1>Faculty Ranking Results</h1>
+    </header>
+
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>Qualifications</th>
+                    <th>Experience</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="faculty-list">
+                <!-- Results will be added here dynamically -->
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>
