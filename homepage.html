@@ -1,108 +1,67 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Resume Upload</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Resume Builder</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="bg-blue-50 flex items-center justify-center min-h-screen">
+<body>
 
-    <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full text-center">
-        <h1 class="text-2xl font-bold text-gray-700 mb-4">Upload Your Resume</h1>
-        <p class="text-gray-500 text-sm mb-4">Upload your resume to get it analyzed and ranked.</p>
-        
-        <!-- Drag & Drop File Upload -->
-        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
-            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 bg-blue-100 hover:bg-blue-200 transition cursor-pointer" id="drop-area">
-                <input type="file" name="file" id="file-input" class="hidden" accept=".pdf, .doc, .docx" required>
-                <p class="text-gray-600 font-medium" id="drop-text">Drag & Drop your resume here</p>
-                <p class="text-sm text-gray-500 mt-2">or click to browse</p>
-            </div>   
+<h2>Resume Builder</h2>
+<div class="container">
+    <div class="form-container">
+        <label>Full Name:</label>
+        <input type="text" id="name">
 
-            <!-- Selected file name display -->
-            <p class="text-green-600 font-semibold mt-2 hidden" id="file-name"></p>
+        <label>Email:</label>
+        <input type="email" id="email">
 
-            <!-- Buttons Container -->
-            <div class="flex justify-center space-x-4 mt-4">
-                <!-- Upload Button -->
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                    Upload
-                </button>
+        <label>Phone:</label>
+        <input type="text" id="phone">
 
-                <!-- Make Resume Button (Redirects to resume.html) -->
-                <a href="index.html" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition">
-                    Make Resume
-                </a>
-            </div>
-        </form>
+        <label>LinkedIn:</label>
+        <input type="text" id="linkedin">
 
-        <!-- Success Message -->
-        <p id="success-message" class="text-green-600 font-semibold mt-4 hidden">File uploaded successfully!</p>
+        <label>Education:</label>
+        <textarea id="education"></textarea>
+
+        <label>Experience:</label>
+        <textarea id="experience"></textarea>
+
+        <label>Skills:</label>
+        <textarea id="skills"></textarea>
+
+        <label>Projects:</label>
+        <textarea id="projects"></textarea>
+
+        <button onclick="generateResume()">Generate Resume</button>
+        <button onclick="downloadResume()">Download as PDF</button>
     </div>
 
-    <script>
-        const dropArea = document.getElementById("drop-area");
-        const fileInput = document.getElementById("file-input");
-        const fileNameDisplay = document.getElementById("file-name");
-        const uploadForm = document.getElementById("upload-form");
-        const successMessage = document.getElementById("success-message");
+    <div class="resume-container">
+        <div id="resume" class="resume">
+            <h2 id="r-name">Your Name</h2>
+            <p><strong>Email:</strong> <span id="r-email">your.email@example.com</span></p>  
+            <p><strong>Phone:</strong> <span id="r-phone">123-456-7890</span></p>
+            <p><strong>LinkedIn:</strong> <span id="r-linkedin">@username</span></p>
+            <hr>
+            <h3>Education</h3>
+            <p id="r-education">Your education details...</p>
+            <hr>
+            <h3>Experience</h3>
+            <p id="r-experience">Your experience details...</p>
+            <hr>
+            <h3>Skills</h3>
+            <p id="r-skills">Your skills...</p>
+            <hr>
+            <h3>Projects</h3>
+            <p id="r-projects">Your projects...</p>
+        </div>
+    </div>
+</div>
 
-        // Open file explorer when clicking the drop area
-        dropArea.addEventListener("click", () => fileInput.click());
-
-        // Display selected file name
-        fileInput.addEventListener("change", (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                fileNameDisplay.textContent = `Selected: ${file.name}`;
-                fileNameDisplay.classList.remove("hidden");
-            }
-        });
-
-        // Handle drag & drop
-        dropArea.addEventListener("dragover", (event) => {
-            event.preventDefault();
-            dropArea.classList.add("border-blue-500");
-        });
-
-        dropArea.addEventListener("dragleave", () => {
-            dropArea.classList.remove("border-blue-500");
-        });
-
-        dropArea.addEventListener("drop", (event) => {
-            event.preventDefault();
-            dropArea.classList.remove("border-blue-500");
-            const file = event.dataTransfer.files[0];
-            fileInput.files = event.dataTransfer.files;
-            if (file) {
-                fileNameDisplay.textContent = `Selected: ${file.name}`;
-                fileNameDisplay.classList.remove("hidden");
-            }
-        });
-
-        // Handle form submission via Fetch API
-        uploadForm.addEventListener("submit", function(event) {
-            event.preventDefault();
-            let formData = new FormData(uploadForm);
-
-            fetch("/upload", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => {
-                if (response.ok) {
-                    successMessage.classList.remove("hidden"); // Show success message
-                    setTimeout(() => {
-                        window.location.href = "/upload-page"; // Redirect to upload page after success
-                    }, 1000);
-                } else {
-                    alert("Upload failed! Please try again.");
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    </script>
-
+<script src="script.js"></script>
 </body>
 </html>
